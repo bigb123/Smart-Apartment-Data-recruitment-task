@@ -7,11 +7,11 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-18.04'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- script: ls -lA
+  displayName: 'Show me the files here'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
