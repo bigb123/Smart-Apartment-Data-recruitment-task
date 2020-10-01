@@ -220,7 +220,7 @@ resource "aws_autoscaling_group" "ubuntu_asg" {
   min_size = 1
   desired_capacity = 1
   max_size = 3
-  availability_zones = ["us-east-1a"]
+  # availability_zones = ["us-east-1a"]
   health_check_grace_period = 300
   health_check_type = "ELB"
   vpc_zone_identifier = [ aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id ]
