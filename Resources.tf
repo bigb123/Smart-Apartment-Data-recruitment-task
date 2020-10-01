@@ -214,7 +214,7 @@ resource "aws_autoscaling_group" "ubuntu_asg" {
   name = "ubuntu_asg"
   # launch_configuration = aws_launch_configuration.ubuntu.name
   launch_template {
-    aws_launch_template.asg_launch_template.id
+    id = aws_launch_template.asg_launch_template.id
     version = "$Latest"
   }
   min_size = 1
