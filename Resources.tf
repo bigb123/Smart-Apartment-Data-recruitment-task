@@ -81,11 +81,11 @@ resource "aws_internet_gateway" "internet_gateway" {
   }
 }
 
-resource "aws_route_table" "route_table_public_subnet" {
+resource "aws_route_table" "route_table_internet" {
   vpc_id = aws_vpc.vpc.id
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block = "10.0.0.0/16"
     gateway_id = aws_internet_gateway.internet_gateway.id
   }
 
