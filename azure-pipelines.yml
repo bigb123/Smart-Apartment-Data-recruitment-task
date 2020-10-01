@@ -5,22 +5,16 @@ pool:
   vmImage: 'ubuntu-18.04'
 
 variables:
-- name: TERRAFORM_PLAN_FILE_PATH
-  value: terraform_plan_file 
+  AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+  AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+  TERRAFORM_PLAN_FILE_PATH: terraform_plan_file
 
 steps:
 - script: terraform init
   displayName: 'Terraform init'
     
-- script: |
-    terraform plan \
-      -out "$TERRAFORM_PLAN_FILE_PATH"
-  env: 
-    AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
-    AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+- script: terraform plan -out "$TERRAFORM_PLAN_FILE_PATH"
   displayName: 'Terraform plan'
-  
-
 
 - script: terraform apply -auto-approve "$TERRAFORM_PLAN_FILE_PATH"
   displayName: 'Terraform apply'
