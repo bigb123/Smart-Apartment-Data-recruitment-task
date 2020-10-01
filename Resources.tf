@@ -182,6 +182,7 @@ resource "aws_launch_template" "asg_launch_template" {
   disable_api_termination = false
   ebs_optimized = true
   image_id = "ami-0817d428a6fb68645"
+  instance_type = "t2.small"
   
   metadata_options {
     http_endpoint               = "enabled"
