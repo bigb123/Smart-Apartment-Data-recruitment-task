@@ -63,13 +63,15 @@ resource "aws_subnet" "private_subnet_2" {
   }
 }
 
+###
 #
 # Traffic routing
 #
+####
 
-resource "aws_eip" "elastic_ip_nat_gateway" {
-  vpc      = true
-}
+#
+# Public routing
+#
 
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id
@@ -77,6 +79,32 @@ resource "aws_internet_gateway" "internet_gateway" {
   tags = {
     Name = "Internet Gateway"
   }
+}
+
+resource "aws_route_table" "route_table_public_subnet" {
+  vpc_id = aws_vpc.vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.internet_gateway.id
+  }
+
+  tags = {
+    Name = "Public (Internet) route table"
+  }
+}
+
+resource "aws_route_table_association" "route_table_public_subnet_association" {
+  gateway_id     = aws_internet_gateway.internet_gateway.id
+  route_table_id = aws_route_table.route_table_public_subnet.id
+}
+
+#
+# Nat routing 
+#
+
+resource "aws_eip" "elastic_ip_nat_gateway" {
+  vpc      = true
 }
 
 resource "aws_nat_gateway" "nat_gateway" {
