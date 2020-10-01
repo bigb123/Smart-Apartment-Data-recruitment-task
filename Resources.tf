@@ -36,21 +36,12 @@ resource "aws_vpc" "vpc" {
 # Subnets
 #
 
-resource "aws_subnet" "public_subnet_1" {
+resource "aws_subnet" "public_subnet" {
   vpc_id = aws_vpc.vpc.id
   cidr_block = "10.0.0.0/24"
 
   tags = {
-    Name = "Public subnet 1"
-  }
-}
-
-resource "aws_subnet" "public_subnet_2" {
-  vpc_id = aws_vpc.vpc.id
-  cidr_block = "10.0.1.0/24"
-
-  tags = {
-    Name = "Public subnet 2"
+    Name = "Public subnet"
   }
 }
 
@@ -69,6 +60,32 @@ resource "aws_subnet" "private_subnet_2" {
 
   tags = {
     Name = "Private subnet 2"
+  }
+}
+
+#
+# Traffic routing
+#
+
+resource "aws_eip" "elastic_ip_nat_gateway" {
+  vpc      = true
+}
+
+resource "aws_internet_gateway" "internet_gateway" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = {
+    Name = "Internet Gateway"
+  }
+}
+
+resource "aws_nat_gateway" "nat_gateway" {
+  allocation_id = aws_eip.elastic_ip_nat_gateway.id
+  subnet_id = aws_subnet.public_subnet.id
+  depends_on = aws_internet_gateway.internet_gateway
+
+  tags = {
+    Name = "Nat Gateway"
   }
 }
 
