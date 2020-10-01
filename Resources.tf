@@ -149,7 +149,7 @@ resource "aws_route_table_association" "route_table_private_subnet_2_association
 
 resource "aws_launch_configuration" "ubuntu" {
   name_prefix = "recruitment_task_"
-  image_id = "ami-0b5cb7048c06279ae"
+  image_id = "ami-0817d428a6fb68645"
   instance_type = "t2.micro"
   associate_public_ip_address = true
   ebs_optimized = true
@@ -166,6 +166,6 @@ resource "aws_autoscaling_group" "ubuntu_asg" {
   desired_capacity = 1
   max_size = 3
   health_check_grace_period = 300
-  health_check_type = "ELB"
+  # health_check_type = "ELB"
   vpc_zone_identifier = [ aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id ]
 }
