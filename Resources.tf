@@ -81,18 +81,18 @@ resource "aws_internet_gateway" "internet_gateway" {
   }
 }
 
-resource "aws_route_table" "route_table_internet" {
-  vpc_id = aws_vpc.vpc.id
+# resource "aws_route_table" "route_table_internet" {
+#   vpc_id = aws_vpc.vpc.id
 
-  route {
-    cidr_block = "10.0.0.0/16"
-    gateway_id = aws_internet_gateway.internet_gateway.id
-  }
+#   route {
+#     cidr_block = "10.0.0.0/16"
+#     gateway_id = aws_internet_gateway.internet_gateway.id
+#   }
 
-  tags = {
-    Name = "Public (Internet) route table"
-  }
-}
+#   tags = {
+#     Name = "Public (Internet) route table"
+#   }
+# }
 
 # resource "aws_route_table_association" "route_table_public_subnet_association" {
 #   gateway_id     = aws_internet_gateway.internet_gateway.id
