@@ -153,7 +153,7 @@ resource "aws_launch_configuration" "ubuntu" {
   instance_type = "t2.micro"
   associate_public_ip_address = true
   ebs_optimized = true
-  ebs_block_device {
+  root_block_device {
     volume_size = 10
     device_name = "/dev/sda1"
   }
