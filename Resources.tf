@@ -156,9 +156,6 @@ resource "aws_launch_configuration" "ubuntu" {
   root_block_device {
     volume_size = 10
   }
-  ebs_block_device {
-    device_name = "/dev/sda1"
-  }
 }
 
 resource "aws_autoscaling_group" "ubuntu_asg" {
