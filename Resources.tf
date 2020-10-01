@@ -155,6 +155,8 @@ resource "aws_launch_configuration" "ubuntu" {
   ebs_optimized = true
   root_block_device {
     volume_size = 10
+  }
+  ebs_block_device {
     device_name = "/dev/sda1"
   }
 }
