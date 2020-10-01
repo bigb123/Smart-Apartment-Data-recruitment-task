@@ -1,19 +1,25 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - master
 
 pool:
   vmImage: 'ubuntu-18.04'
 
-steps:
-- script: ls -lA
-  displayName: 'Show me the files here'
+variables:
+- name: TERRAFORM_PLAN_FILE_PATH
+  value: terraform_plan_file 
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+steps:
+- displayName: 'Terraform init'
+  script: terraform init
+  
+- displayName: 'Terraform plan'
+  env: 
+    AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+    AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
+  script: |
+    terraform plan \
+      -out "$TERRAFORM_PLAN_FILE_PATH"
+
+
+- displayName: 'Terraform apply'
+  script: terraform apply -auto-approve "$TERRAFORM_PLAN_FILE_PATH"
