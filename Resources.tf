@@ -148,30 +148,80 @@ resource "aws_route_table_association" "route_table_private_subnet_2_association
 #
 ###
 
-resource "aws_launch_configuration" "ubuntu" {
-  name_prefix = "recruitment_task_"
-  image_id = "ami-0817d428a6fb68645"
-  instance_type = "t2.small"
-  associate_public_ip_address = false
-  ebs_optimized = true
-  root_block_device {
-    volume_size = 10
+# resource "aws_launch_configuration" "ubuntu" {
+#   name_prefix = "recruitment_task_"
+#   image_id = "ami-0817d428a6fb68645"
+#   instance_type = "t2.small"
+#   associate_public_ip_address = false
+#   ebs_optimized = true
+#   root_block_device {
+#     volume_size = 10
+#   }
+# }
+
+resource "aws_launch_template" "asg_launch_template" {
+  name = "asg_launch_template"
+
+  block_device_mappings {
+    device_name = "/dev/sda1"
+
+    ebs {
+      volume_size = 20
+    }
   }
-  # ebs_block_device {
-  #   snapshot_id = snap-0e523815c0ee5d659
-  # }
-  # lifecycle {
-  #   create_before_destroy = true
-  # }
+  
+  capacity_reservation_specification {
+    capacity_reservation_preference = "open"
+  }
+  
+  cpu_options {
+    core_count       = 2
+    threads_per_core = 2
+  }
+  
+  disable_api_termination = false
+  ebs_optimized = true
+  image_id = "ami-0817d428a6fb68645"
+  
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+  }
+
+  monitoring {
+    enabled = true
+  }
+
+  network_interfaces {
+    associate_public_ip_address = true
+  }
+
+  placement {
+    availability_zone = "us-east-1a"
+  }
+
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = {
+      Name = "ASG instance"
+    }
+  }
 }
 
 resource "aws_autoscaling_group" "ubuntu_asg" {
   name = "ubuntu_asg"
-  launch_configuration = aws_launch_configuration.ubuntu.name
+  # launch_configuration = aws_launch_configuration.ubuntu.name
+  launch_template {
+    aws_launch_template.asg_launch_template.id
+    version = "$Latest"
+  }
   min_size = 1
   desired_capacity = 1
   max_size = 3
-  # health_check_grace_period = 300
-  # health_check_type = "ELB"
+  availability_zones = ["us-east-1a"]
+  health_check_grace_period = 300
+  health_check_type = "ELB"
   vpc_zone_identifier = [ aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id ]
 }
