@@ -156,6 +156,9 @@ resource "aws_launch_configuration" "ubuntu" {
   root_block_device {
     volume_size = 10
   }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_autoscaling_group" "ubuntu_asg" {
