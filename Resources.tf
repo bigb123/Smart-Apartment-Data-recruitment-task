@@ -174,10 +174,10 @@ resource "aws_launch_template" "asg_launch_template" {
     capacity_reservation_preference = "open"
   }
   
-  cpu_options {
-    core_count       = 2
-    threads_per_core = 2
-  }
+  # cpu_options {
+  #   core_count       = 2
+  #   threads_per_core = 2
+  # }
   
   disable_api_termination = false
   ebs_optimized = true
