@@ -26,7 +26,7 @@
 
 resource "aws_vpc" "vpc" {
   cidr_block = "10.0.0.0/16"
-  instance_tenancy = default
+  # instance_tenancy = default
   tags = {
     Name = "Smart Appartment Data recruitment task"
   }
@@ -152,7 +152,7 @@ resource "aws_launch_configuration" "ubuntu" {
   name_prefix = "recruitment_task_"
   image_id = "ami-0817d428a6fb68645"
   instance_type = "t2.small"
-  associate_public_ip_address = true
+  associate_public_ip_address = false
   ebs_optimized = true
   root_block_device {
     volume_size = 10
