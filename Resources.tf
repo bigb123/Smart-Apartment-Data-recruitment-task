@@ -94,6 +94,11 @@ resource "aws_route_table" "route_table_internet" {
   }
 }
 
+resource "aws_route_table_association" "route_table_internet_association" {
+  subnet_id      = aws_subnet.public_subnet.id
+  route_table_id = aws_route_table.route_table_internet.id
+}
+
 # resource "aws_route_table_association" "route_table_public_subnet_association" {
 #   gateway_id     = aws_internet_gateway.internet_gateway.id
 #   route_table_id = aws_route_table.route_table_internet.id
@@ -117,3 +122,25 @@ resource "aws_nat_gateway" "nat_gateway" {
   }
 }
 
+resource "aws_route_table" "route_table_private_subnet" {
+  vpc_id = aws_vpc.vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.nat_gateway.id
+  }
+
+  tags = {
+    Name = "Private (internal) route table"
+  }
+}
+
+resource "aws_route_table_association" "route_table_private_subnet_1_association" {
+  subnet_id      = aws_subnet.private_subnet_1.id
+  route_table_id = aws_route_table.route_table_private_subnet.id
+}
+
+resource "aws_route_table_association" "route_table_private_subnet_2_association" {
+  subnet_id      = aws_subnet.private_subnet_2.id
+  route_table_id = aws_route_table.route_table_private_subnet.id
+}
