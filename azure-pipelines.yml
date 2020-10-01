@@ -9,17 +9,18 @@ variables:
   value: terraform_plan_file 
 
 steps:
-- displayName: 'Terraform init'
-  script: terraform init
-  
-- displayName: 'Terraform plan'
+- script: terraform init
+  displayName: 'Terraform init'
+    
+- script: |
+    terraform plan \
+      -out "$TERRAFORM_PLAN_FILE_PATH"
   env: 
     AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
     AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
-  script: |
-    terraform plan \
-      -out "$TERRAFORM_PLAN_FILE_PATH"
+  displayName: 'Terraform plan'
+  
 
 
-- displayName: 'Terraform apply'
-  script: terraform apply -auto-approve "$TERRAFORM_PLAN_FILE_PATH"
+- script: terraform apply -auto-approve "$TERRAFORM_PLAN_FILE_PATH"
+  displayName: 'Terraform apply'
