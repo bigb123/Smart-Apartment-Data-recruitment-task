@@ -147,81 +147,19 @@ resource "aws_route_table_association" "route_table_private_subnet_2_association
 #
 ###
 
-resource "aws_launch_template" "ubuntu_template" {
-  name = "ubuntu_template"
-
-  block_device_mappings {
-    device_name = "/dev/sda1"
-
-    ebs {
-      volume_size = 10
-    }
-  }
-
-  capacity_reservation_specification {
-    capacity_reservation_preference = "open"
-  }
-
-  cpu_options {
-    core_count       = 4
-    threads_per_core = 2
-  }
-
-  credit_specification {
-    cpu_credits = "standard"
-  }
-
-  disable_api_termination = false
-
-  ebs_optimized = true
-
-  # iam_instance_profile {
-  #   name = "test"
-  # }
-
+resource "aws_launch_configuration" "ubuntu" {
+  name_prefix = "recruitment_task_"
   image_id = "ami-0b5cb7048c06279ae"
-
-  instance_initiated_shutdown_behavior = "terminate"
-
-  # instance_market_options {
-  #   market_type = "spot"
-  # }
-
   instance_type = "t2.micro"
-
-  # kernel_id = "test"
-
-  # key_name = "test"
-
-  # metadata_options {
-  #   http_endpoint               = "enabled"
-  #   http_tokens                 = "required"
-  #   http_put_response_hop_limit = 1
-  # }
-
-  monitoring {
-    enabled = true
+  associate_public_ip_address = true
+  ebs_optimized = true
+  ebs_block_device {
+    volume_size = 10
+    device_name = "/dev/sda1"
   }
-
-  network_interfaces {
-    associate_public_ip_address = true
-  }
-
-  placement {
-    availability_zone = "us-east-1a"
-  }
-
-  # ram_disk_id = "test"
-
-  # vpc_security_group_ids = ["sg-12345678"]
-
-  tag_specifications {
-    resource_type = "instance"
-
-    tags = {
-      Name = "Instance template"
-    }
-  }
-
-  # user_data = filebase64("${path.module}/example.sh")
 }
+
+# resource "aws_autoscaling_group" "bar" {
+#   name                 = "terraform-asg-example"
+#   launch_configuration = aws_launch_configuration.as_conf.name
+# }
