@@ -26,6 +26,7 @@
 
 resource "aws_vpc" "vpc" {
   cidr_block = "10.0.0.0/16"
+  instance_tenancy = default
   tags = {
     Name = "Smart Appartment Data recruitment task"
   }
@@ -156,9 +157,12 @@ resource "aws_launch_configuration" "ubuntu" {
   root_block_device {
     volume_size = 10
   }
-  lifecycle {
-    create_before_destroy = true
-  }
+  # ebs_block_device {
+  #   snapshot_id = snap-0e523815c0ee5d659
+  # }
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
 }
 
 resource "aws_autoscaling_group" "ubuntu_asg" {
