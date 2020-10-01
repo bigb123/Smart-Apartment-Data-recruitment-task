@@ -94,10 +94,10 @@ resource "aws_route_table" "route_table_internet" {
   }
 }
 
-resource "aws_route_table_association" "route_table_public_subnet_association" {
-  gateway_id     = aws_internet_gateway.internet_gateway.id
-  route_table_id = aws_route_table.route_table_internet.id
-}
+# resource "aws_route_table_association" "route_table_public_subnet_association" {
+#   gateway_id     = aws_internet_gateway.internet_gateway.id
+#   route_table_id = aws_route_table.route_table_internet.id
+# }
 
 #
 # Nat routing 
