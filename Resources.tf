@@ -202,20 +202,31 @@ resource "aws_security_group" "allow_http" {
   }
 }
 
-# resource "aws_lb" "app_load_balancer" {
-#   name = "alb-sad-recruitment-task"
-#   internal = false
-#   load_balancer_type = "application"
-#   security_groups = [ aws_security_group.allow_http.id ]
-#   subnets = [ aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id ]
+resource "aws_lb" "app_load_balancer" {
+  name = "alb-sad-recruitment-task"
+  internal = false
+  load_balancer_type = "application"
+  security_groups = [ aws_security_group.allow_http.id ]
+  subnets = [ aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id ]
 
-# }
+}
 
 resource "aws_lb_target_group" "load_balancer_target_group" {
   name     = "tg-sad-recruitment-task"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc.id
+}
+
+resource "aws_lb_listener" "listener_http_80" {
+  load_balancer_arn = aws_lb.app_load_balancer.arn
+  port = "80"
+  protocol = "HTTP"
+
+  default_action {
+    type = "forward"
+    target_group_arn = aws_lb_target_group.load_balancer_target_group.arn
+  }
 }
 
 resource "aws_launch_template" "nginx_template" {
@@ -267,7 +278,7 @@ resource "aws_launch_template" "nginx_template" {
     resource_type = "instance"
 
     tags = {
-      Name = "ASG instance"
+      Name = "ASG instance SAD recruitment task"
     }
   }
 }
