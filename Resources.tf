@@ -202,21 +202,21 @@ resource "aws_security_group" "allow_http" {
   }
 }
 
-resource "aws_lb" "app_load_balancer" {
-  name = "alb-sad-recruitment-task"
-  internal = false
-  load_balancer_type = "application"
-  security_groups = [ aws_security_group.allow_http.id ]
-  subnets = [ aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id ]
+# resource "aws_lb" "app_load_balancer" {
+#   name = "alb-sad-recruitment-task"
+#   internal = false
+#   load_balancer_type = "application"
+#   security_groups = [ aws_security_group.allow_http.id ]
+#   subnets = [ aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id ]
 
-}
-
-# resource "aws_lb_target_group" "app_lb_tg" {
-#   name     = "app-load-balancer-target-group-sad-recruitment-task"
-#   port     = 80
-#   protocol = "HTTP"
-#   vpc_id   = aws_vpc.vpc.id
 # }
+
+resource "aws_lb_target_group" "load_balancer_target_group" {
+  name     = "target-group-sad-recruitment-task"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.vpc.id
+}
 
 resource "aws_launch_template" "asg_launch_template" {
   name = "asg-sad-recruitment-task"
