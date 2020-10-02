@@ -218,7 +218,7 @@ resource "aws_lb_target_group" "load_balancer_target_group" {
   vpc_id   = aws_vpc.vpc.id
 }
 
-resource "aws_launch_template" "asg_launch_template" {
+resource "aws_launch_template" "nginx_template" {
   name = "asg-sad-recruitment-task"
   description = "Launch template for Smart Appartment Data recruitment task"
   update_default_version = true
@@ -243,7 +243,8 @@ resource "aws_launch_template" "asg_launch_template" {
   # }
 
   ebs_optimized = false
-  image_id = "ami-0817d428a6fb68645"
+  image_id = "ami-0708a0921e5eaf65d"
+  # ubuntu: ami-0817d428a6fb68645
   instance_initiated_shutdown_behavior = "terminate"
   instance_type = "t2.micro"
   
@@ -257,9 +258,9 @@ resource "aws_launch_template" "asg_launch_template" {
     enabled = true
   }
 
-  network_interfaces {
-    associate_public_ip_address = true
-  }
+  # network_interfaces {
+  #   associate_public_ip_address = true
+  # }
   key_name = "sad-recruitment-task"
 
   tag_specifications {
@@ -271,11 +272,11 @@ resource "aws_launch_template" "asg_launch_template" {
   }
 }
 
-resource "aws_autoscaling_group" "ubuntu_asg" {
-  name = "ubuntu_asg"
+resource "aws_autoscaling_group" "nginx_asg" {
+  name = "nginx_asg"
   # launch_configuration = aws_launch_configuration.ubuntu.name
   launch_template {
-    id = aws_launch_template.asg_launch_template.id
+    id = aws_launch_template.nginx_template.id
     version = "$Latest"
   }
   min_size = 1
