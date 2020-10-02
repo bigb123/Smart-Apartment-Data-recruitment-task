@@ -168,6 +168,8 @@ resource "aws_launch_template" "asg_launch_template" {
 
     ebs {
       volume_size = 20
+      delete_on_termination = true
+      volume_type = gp2
     }
   }
   
