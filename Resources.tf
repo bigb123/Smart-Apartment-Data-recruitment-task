@@ -212,7 +212,7 @@ resource "aws_security_group" "allow_http" {
 # }
 
 resource "aws_lb_target_group" "load_balancer_target_group" {
-  name     = "target-group-sad-recruitment-task"
+  name     = "tg-sad-recruitment-task"
   port     = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc.id
