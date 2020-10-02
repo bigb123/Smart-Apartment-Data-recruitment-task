@@ -168,7 +168,7 @@ resource "aws_security_group" "allow_http" {
     description = "HTTP from VPC"
     from_port   = 80
     to_port     = 80
-    protocol    = "-1"
+    protocol    = "tcp"
     cidr_blocks = [aws_vpc.vpc.cidr_block]
   }
 
