@@ -185,7 +185,7 @@ resource "aws_security_group" "allow_http" {
 }
 
 resource "aws_lb" "app_load_balancer" {
-  name = "app-load-balancer-sad-recruitment-task"
+  name = "alb-sad-recruitment-task"
   internal = false
   load_balancer_type = "application"
   security_groups = [ aws_security_group.allow_http.id ]
