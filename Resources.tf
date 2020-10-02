@@ -113,6 +113,11 @@ resource "aws_route_table_association" "route_table_internet_association" {
   route_table_id = aws_route_table.route_table_internet.id
 }
 
+resource "aws_route_table_association" "route_table_internet_association_2" {
+  subnet_id      = aws_subnet.public_subnet_2.id
+  route_table_id = aws_route_table.route_table_internet.id
+}
+
 #
 # Nat routing 
 #
