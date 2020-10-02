@@ -243,7 +243,7 @@ resource "aws_launch_template" "asg_launch_template" {
   # }
   
   # disable_api_termination = false
-  ebs_optimized = true
+  ebs_optimized = false
   image_id = "ami-0817d428a6fb68645"
   instance_initiated_shutdown_behavior = "terminate"
   instance_type = "t2.micro"
