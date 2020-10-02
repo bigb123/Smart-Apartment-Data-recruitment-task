@@ -164,7 +164,7 @@ resource "aws_launch_template" "asg_launch_template" {
   description = "Launch template for Smart Appartment Data recruitment task"
 
   block_device_mappings {
-    device_name = "/dev/sda1"
+    device_name = "/dev/sda"
 
     ebs {
       volume_size = 20
