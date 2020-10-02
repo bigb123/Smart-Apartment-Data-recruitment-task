@@ -174,9 +174,9 @@ resource "aws_launch_template" "asg_launch_template" {
   #   }
   # }
   
-  capacity_reservation_specification {
-    capacity_reservation_preference = "open"
-  }
+  # capacity_reservation_specification {
+  #   capacity_reservation_preference = "open"
+  # }
   
   # cpu_options {
   #   core_count       = 2
@@ -189,31 +189,31 @@ resource "aws_launch_template" "asg_launch_template" {
   instance_initiated_shutdown_behavior = "terminate"
   instance_type = "t2.micro"
   
-  metadata_options {
-    http_endpoint               = "enabled"
-    http_tokens                 = "required"
-    http_put_response_hop_limit = 1
-  }
+  # metadata_options {
+  #   http_endpoint               = "enabled"
+  #   http_tokens                 = "required"
+  #   http_put_response_hop_limit = 1
+  # }
 
   monitoring {
     enabled = true
   }
 
-  network_interfaces {
-    associate_public_ip_address = true
-  }
+  # network_interfaces {
+  #   associate_public_ip_address = true
+  # }
 
   # placement {
   #   availability_zone = "us-east-1a"
   # }
 
-  tag_specifications {
-    resource_type = "instance"
+  # tag_specifications {
+  #   resource_type = "instance"
 
-    tags = {
-      Name = "ASG instance"
-    }
-  }
+  #   tags = {
+  #     Name = "ASG instance"
+  #   }
+  # }
 }
 
 # resource "aws_autoscaling_group" "ubuntu_asg" {
