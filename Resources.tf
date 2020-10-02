@@ -266,27 +266,28 @@ resource "aws_launch_template" "asg_launch_template" {
   #   availability_zone = "us-east-1a"
   # }
 
-  # tag_specifications {
-  #   resource_type = "instance"
+  tag_specifications {
+    resource_type = "instance"
 
-  #   tags = {
-  #     Name = "ASG instance"
-  #   }
-  # }
+    tags = {
+      Name = "ASG instance"
+    }
+  }
 }
 
-# resource "aws_autoscaling_group" "ubuntu_asg" {
-#   name = "ubuntu_asg"
-#   # launch_configuration = aws_launch_configuration.ubuntu.name
-#   launch_template {
-#     id = aws_launch_template.asg_launch_template.id
-#     version = "$Latest"
-#   }
-#   min_size = 1
-#   desired_capacity = 1
-#   max_size = 3
-#   # availability_zones = ["us-east-1a"]
-#   health_check_grace_period = 300
-#   health_check_type = "ELB"
-#   vpc_zone_identifier = [ aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id ]
-# }
+resource "aws_autoscaling_group" "ubuntu_asg" {
+  name = "ubuntu_asg"
+  # launch_configuration = aws_launch_configuration.ubuntu.name
+  launch_template {
+    id = aws_launch_template.asg_launch_template.id
+    version = "$Latest"
+  }
+  min_size = 1
+  desired_capacity = 1
+  max_size = 3
+  # availability_zones = ["us-east-1a"]
+  health_check_grace_period = 300
+  health_check_type = "ELB"
+  vpc_zone_identifier = [ aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id ]
+  target_group_arns = [ aws_lb_target_group.load_balancer_target_group.arn ]
+}
