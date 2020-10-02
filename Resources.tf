@@ -160,7 +160,8 @@ resource "aws_route_table_association" "route_table_private_subnet_2_association
 # }
 
 resource "aws_launch_template" "asg_launch_template" {
-  name = "asg_launch_template"
+  name_prefix = "recruitment_task_"
+  description = "Launch template for Smart Appartment Data recruitment task"
 
   block_device_mappings {
     device_name = "/dev/sda1"
@@ -182,7 +183,8 @@ resource "aws_launch_template" "asg_launch_template" {
   disable_api_termination = false
   ebs_optimized = true
   image_id = "ami-0817d428a6fb68645"
-  instance_type = "t2.small"
+  instance_initiated_shutdown_behavior = "terminate"
+  instance_type = "t2.micro"
   
   metadata_options {
     http_endpoint               = "enabled"
@@ -198,9 +200,9 @@ resource "aws_launch_template" "asg_launch_template" {
     associate_public_ip_address = true
   }
 
-  placement {
-    availability_zone = "us-east-1a"
-  }
+  # placement {
+  #   availability_zone = "us-east-1a"
+  # }
 
   tag_specifications {
     resource_type = "instance"
@@ -211,18 +213,18 @@ resource "aws_launch_template" "asg_launch_template" {
   }
 }
 
-resource "aws_autoscaling_group" "ubuntu_asg" {
-  name = "ubuntu_asg"
-  # launch_configuration = aws_launch_configuration.ubuntu.name
-  launch_template {
-    id = aws_launch_template.asg_launch_template.id
-    version = "$Latest"
-  }
-  min_size = 1
-  desired_capacity = 1
-  max_size = 3
-  # availability_zones = ["us-east-1a"]
-  health_check_grace_period = 300
-  health_check_type = "ELB"
-  vpc_zone_identifier = [ aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id ]
-}
+# resource "aws_autoscaling_group" "ubuntu_asg" {
+#   name = "ubuntu_asg"
+#   # launch_configuration = aws_launch_configuration.ubuntu.name
+#   launch_template {
+#     id = aws_launch_template.asg_launch_template.id
+#     version = "$Latest"
+#   }
+#   min_size = 1
+#   desired_capacity = 1
+#   max_size = 3
+#   # availability_zones = ["us-east-1a"]
+#   health_check_grace_period = 300
+#   health_check_type = "ELB"
+#   vpc_zone_identifier = [ aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id ]
+# }
