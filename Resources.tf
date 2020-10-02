@@ -160,7 +160,7 @@ resource "aws_route_table_association" "route_table_private_subnet_2_association
 # }
 
 resource "aws_launch_template" "asg_launch_template" {
-  name_prefix = "recruitment_task_"
+  name = "asg-sat-recruitment-task"
   description = "Launch template for Smart Appartment Data recruitment task"
 
   block_device_mappings {
