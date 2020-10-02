@@ -37,18 +37,30 @@ resource "aws_vpc" "vpc" {
 # Subnets
 #
 
-resource "aws_subnet" "public_subnet" {
+resource "aws_subnet" "public_subnet_1" {
   vpc_id = aws_vpc.vpc.id
   cidr_block = "10.0.0.0/24"
+  availability_zone = "us-east-1a"
 
   tags = {
-    Name = "Public subnet"
+    Name = "Public subnet 1"
+  }
+}
+
+resource "aws_subnet" "public_subnet_2" {
+  vpc_id = aws_vpc.vpc.id
+  cidr_block = "10.0.1.0/24"
+  availability_zone = "us-east-1b"
+
+  tags = {
+    Name = "Public subnet 2"
   }
 }
 
 resource "aws_subnet" "private_subnet_1" {
   vpc_id = aws_vpc.vpc.id
   cidr_block = "10.0.128.0/24"
+  availability_zone = "us-east-1a"
 
   tags = {
     Name = "Private subnet 1"
@@ -58,6 +70,7 @@ resource "aws_subnet" "private_subnet_1" {
 resource "aws_subnet" "private_subnet_2" {
   vpc_id = aws_vpc.vpc.id
   cidr_block = "10.0.129.0/24"
+  availability_zone = "us-east-1b"
 
   tags = {
     Name = "Private subnet 2"
@@ -96,7 +109,7 @@ resource "aws_route_table" "route_table_internet" {
 }
 
 resource "aws_route_table_association" "route_table_internet_association" {
-  subnet_id      = aws_subnet.public_subnet.id
+  subnet_id      = aws_subnet.public_subnet_1.id
   route_table_id = aws_route_table.route_table_internet.id
 }
 
@@ -110,7 +123,7 @@ resource "aws_eip" "elastic_ip_nat_gateway" {
 
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.elastic_ip_nat_gateway.id
-  subnet_id = aws_subnet.public_subnet.id
+  subnet_id = aws_subnet.public_subnet_1.id
   depends_on = [ aws_internet_gateway.internet_gateway ]
 
   tags = {
@@ -189,7 +202,7 @@ resource "aws_lb" "app_load_balancer" {
   internal = false
   load_balancer_type = "application"
   security_groups = [ aws_security_group.allow_http.id ]
-  subnets = [ aws_subnet.public_subnet.id ]
+  subnets = [ aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id ]
 
 }
 
