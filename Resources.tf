@@ -162,7 +162,8 @@ resource "aws_route_table_association" "route_table_private_subnet_2_association
 resource "aws_launch_template" "asg_launch_template" {
   name = "asg-sat-recruitment-task"
   description = "Launch template for Smart Appartment Data recruitment task"
-
+  update_default_version = true
+  
   block_device_mappings {
     device_name = "/dev/sda"
 
