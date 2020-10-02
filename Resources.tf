@@ -163,16 +163,16 @@ resource "aws_launch_template" "asg_launch_template" {
   name = "asg-sat-recruitment-task"
   description = "Launch template for Smart Appartment Data recruitment task"
   update_default_version = true
-  
-  block_device_mappings {
-    device_name = "/dev/sda"
 
-    ebs {
-      volume_size = 20
-      delete_on_termination = true
-      volume_type = "gp2"
-    }
-  }
+  # block_device_mappings {
+  #   device_name = "/dev/sda"
+
+  #   ebs {
+  #     volume_size = 20
+  #     delete_on_termination = true
+  #     volume_type = "gp2"
+  #   }
+  # }
   
   capacity_reservation_specification {
     capacity_reservation_preference = "open"
