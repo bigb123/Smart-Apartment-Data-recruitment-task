@@ -242,7 +242,7 @@ resource "aws_launch_template" "asg_launch_template" {
   #   threads_per_core = 2
   # }
   
-  disable_api_termination = false
+  # disable_api_termination = false
   ebs_optimized = true
   image_id = "ami-0817d428a6fb68645"
   instance_initiated_shutdown_behavior = "terminate"
