@@ -241,8 +241,7 @@ resource "aws_launch_template" "asg_launch_template" {
   #   core_count       = 2
   #   threads_per_core = 2
   # }
-  
-  # disable_api_termination = false
+
   ebs_optimized = false
   image_id = "ami-0817d428a6fb68645"
   instance_initiated_shutdown_behavior = "terminate"
@@ -258,13 +257,10 @@ resource "aws_launch_template" "asg_launch_template" {
     enabled = true
   }
 
-  # network_interfaces {
-  #   associate_public_ip_address = true
-  # }
-
-  # placement {
-  #   availability_zone = "us-east-1a"
-  # }
+  network_interfaces {
+    associate_public_ip_address = true
+  }
+  key_name = "sad-recruitment-task"
 
   tag_specifications {
     resource_type = "instance"
