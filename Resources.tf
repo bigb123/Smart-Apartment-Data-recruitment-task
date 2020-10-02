@@ -159,8 +159,49 @@ resource "aws_route_table_association" "route_table_private_subnet_2_association
 #   }
 # }
 
+resource "aws_security_group" "allow_http" {
+  name        = "allow_http"
+  description = "Allow HTTP inbound traffic"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    description = "HTTP from VPC"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "-1"
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_http"
+  }
+}
+
+resource "aws_lb" "app_load_balancer" {
+  name = "app-load-balancer-sad-recruitment-task"
+  internal = false
+  load_balancer_type = "application"
+  security_groups = [ aws_security_group.allow_http.id ]
+  subnets = [ aws_subnet.public_subnet.id ]
+
+}
+
+# resource "aws_lb_target_group" "app_lb_tg" {
+#   name     = "app-load-balancer-target-group-sad-recruitment-task"
+#   port     = 80
+#   protocol = "HTTP"
+#   vpc_id   = aws_vpc.vpc.id
+# }
+
 resource "aws_launch_template" "asg_launch_template" {
-  name = "asg-sat-recruitment-task"
+  name = "asg-sad-recruitment-task"
   description = "Launch template for Smart Appartment Data recruitment task"
   update_default_version = true
 
