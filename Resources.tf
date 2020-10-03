@@ -1,25 +1,3 @@
-# resource "google_container_cluster" "kube-cluster" {
-#   name = var.kubernetes_cluster_name
-#   description = "The Kubernetes cluster created in Amity recruitment task purposes"
-#   location = var.gcp_region
-#   remove_default_node_pool = true
-#   initial_node_count = 1
-#   min_master_version = "1.16.13-gke.1"
-# }
-
-# resource "google_container_node_pool" "kube-node-pool" {
-#   name = "kube-node-pool"
-#   location = var.gcp_region
-#   cluster = google_container_cluster.kube-cluster.name
-#   node_count = 1
-
-#   autoscaling {
-#     min_node_count = 1
-#     max_node_count = 1
-#   }
-# }
-
-
 #
 # VPC
 #
@@ -295,9 +273,6 @@ resource "aws_launch_template" "nginx_template" {
     enabled = true
   }
 
-  # network_interfaces {
-  #   associate_public_ip_address = true
-  # }
   key_name = "sad-recruitment-task"
 
   tag_specifications {
@@ -339,3 +314,38 @@ resource "aws_autoscaling_policy" "cpu_load_autoscaling" {
     target_value = 60.0
   }
 }
+
+
+###
+#
+# Lambda
+#
+###
+
+#
+# IAM Permissions
+#
+
+resource "aws_iam_role" "iam_for_lambda" {
+  name = "iam_for_lambda"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+#
+# Function
+# 
