@@ -18,7 +18,7 @@ exports.handler = async function(event) {
       })
     })
   
-  console.log("response from internal site:", promise_internal)
+  console.log("response from internal site:", await promise_internal)
 
   const promise_external = new Promise(function(resolve, reject) {
     https.get(url_external, (res) => {
@@ -28,7 +28,7 @@ exports.handler = async function(event) {
       })
     })
 
-  console.log("response from internal site:", promise_external)
+  console.log("response from internal site:", await promise_external)
 
   return promise_external
 }
