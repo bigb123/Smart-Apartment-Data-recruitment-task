@@ -329,6 +329,7 @@ resource "aws_autoscaling_group" "nginx_asg" {
 resource "aws_autoscaling_policy" "cpu_load_autoscaling" {
   name = "cpu_load_autoscaling"
   autoscaling_group_name = aws_autoscaling_group.nginx_asg.name
+  policy_type = "TargetTrackingScaling"
   estimated_instance_warmup = "180"
   target_tracking_configuration {
     predefined_metric_specification {
