@@ -8,15 +8,16 @@ variables:
   TERRAFORM_PLAN_FILE_PATH: terraform_plan_file
 
 steps:
+- script: bash -c "cd lambda_function_code && zip ../lambda_function_source_code.zip index.js"
+  displayName: "Prepare AWS Lambda function code package"
+
 - script: terraform init
   env: 
     AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
     AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
   displayName: 'Terraform init'
     
-- script: |
-    terraform plan \
-      -out "$TERRAFORM_PLAN_FILE_PATH"
+- script: terraform plan -out "$TERRAFORM_PLAN_FILE_PATH"
   env: 
     AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
     AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)

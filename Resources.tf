@@ -349,3 +349,21 @@ EOF
 #
 # Function
 # 
+
+resource "aws_lambda_function" "lambda_in_vpc" {
+  function_name = "run_simple_code"
+  description = "Function created for Smart Appartment Data recruitment task to 
+  demonstrate the ability to connect with local instances in VPC and with outside 
+  world."
+  filename      = "lambda_function_source_code.zip"
+  role          = aws_iam_role.iam_for_lambda.arn
+  handler       = "exports.handler"
+  publish       = true
+  source_code_hash = filebase64sha256("lambda_function_source_code.zip")
+  runtime = "nodejs12.x"
+  
+  vpc_config {
+    subnet_ids = [ aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id ]
+    security_group_ids = [ aws_security_group.allow_http_external.id ]
+  }
+}
