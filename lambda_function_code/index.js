@@ -7,7 +7,7 @@
 const https = require('https')
 const http = require('http')
 let url_external = "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"
-let url_internal = "10.0.129.161"
+let url_internal = "http://10.0.129.161"
 
 exports.handler = async function(event) {
   const promise_internal = new Promise(function(resolve, reject) {
