@@ -177,8 +177,8 @@ resource "aws_route_table_association" "route_table_private_subnet_2_association
 #   }
 # }
 
-resource "aws_security_group" "allow_http" {
-  name        = "allow_http"
+resource "aws_security_group" "allow_http_internal" {
+  name        = "allow_http_internal"
   description = "Allow HTTP inbound traffic"
   vpc_id      = aws_vpc.vpc.id
 
@@ -198,7 +198,32 @@ resource "aws_security_group" "allow_http" {
   }
 
   tags = {
-    Name = "allow_http"
+    Name = "allow_http_internal"
+  }
+}
+
+resource "aws_security_group" "allow_http_external" {
+  name        = "allow_http_external"
+  description = "Allow HTTP inbound traffic from the Internet"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    description = "HTTP from outside world"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_http_external"
   }
 }
 
@@ -206,7 +231,7 @@ resource "aws_lb" "app_load_balancer" {
   name = "alb-sad-recruitment-task"
   internal = false
   load_balancer_type = "application"
-  security_groups = [ aws_security_group.allow_http.id ]
+  security_groups = [ aws_security_group.allow_http_external.id ]
   subnets = [ aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id ]
 
 }
@@ -258,7 +283,7 @@ resource "aws_launch_template" "nginx_template" {
   # ubuntu: ami-0817d428a6fb68645
   instance_initiated_shutdown_behavior = "terminate"
   instance_type = "t2.micro"
-  vpc_security_group_ids = [ aws_security_group.allow_http.id ]
+  vpc_security_group_ids = [ aws_security_group.allow_http_internal.id ]
   
   # metadata_options {
   #   http_endpoint               = "enabled"
