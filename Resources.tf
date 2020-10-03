@@ -317,11 +317,24 @@ resource "aws_autoscaling_group" "nginx_asg" {
     version = "$Latest"
   }
   min_size = 1
-  desired_capacity = 1
+  # desired_capacity = 1
   max_size = 3
   # availability_zones = ["us-east-1a"]
   health_check_grace_period = 300
   health_check_type = "ELB"
   vpc_zone_identifier = [ aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id ]
   target_group_arns = [ aws_lb_target_group.load_balancer_target_group.arn ]
+}
+
+resource "aws_autoscaling_policy" "cpu_load_autoscaling" {
+  name = "cpu_load_autoscaling"
+  autoscaling_group_name = aws_autoscaling_group.nginx_asg.name
+  estimated_instance_warmup = "180"
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+
+    target_value = 60.0
+  }
 }
