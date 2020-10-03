@@ -352,10 +352,11 @@ EOF
 
 resource "aws_lambda_function" "lambda_in_vpc" {
   function_name = "run_simple_code"
-  description = |
-    "Function created for Smart Appartment Data recruitment task to 
-    demonstrate the ability to connect with local instances in VPC and with outside 
-    world."
+  description = <<EOF
+"Function created for Smart Appartment Data recruitment task to 
+demonstrate the ability to connect with local instances in VPC and with outside 
+world."
+EOF
   filename      = "lambda_function_source_code.zip"
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "exports.handler"
