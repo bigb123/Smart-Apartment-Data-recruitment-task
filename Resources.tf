@@ -364,7 +364,7 @@ world."
 EOF
   filename      = "lambda_function_source_code.zip"
   role          = aws_iam_role.iam_for_lambda.arn
-  handler       = "exports.handler"
+  handler       = "index.handler"
   publish       = true
   source_code_hash = filebase64sha256("lambda_function_source_code.zip")
   runtime = "nodejs12.x"
