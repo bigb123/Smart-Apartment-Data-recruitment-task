@@ -1,23 +1,3 @@
-# terraform {
-#   required_providers {
-#     google = {
-#       source = "hashicorp/google"
-#     }
-#   }
-#   backend "gcs" {
-#       bucket = "terraform-state-file-omiselabs-recruitment-task"
-#   }
-# }
-
-# provider "google" {
-#   version = "3.5.0"
-#   credentials = file(var.gcp_credentials_file_path)
-#   project = var.project_id
-#   region  = "us-central1"
-#   zone    = "us-central1-c"
-# }
-
-
 terraform {
   required_providers {
     aws = {

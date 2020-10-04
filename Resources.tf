@@ -144,17 +144,6 @@ resource "aws_route_table_association" "route_table_private_subnet_2_association
 #
 ###
 
-# resource "aws_launch_configuration" "ubuntu" {
-#   name_prefix = "recruitment_task_"
-#   image_id = "ami-0817d428a6fb68645"
-#   instance_type = "t2.small"
-#   associate_public_ip_address = false
-#   ebs_optimized = true
-#   root_block_device {
-#     volume_size = 10
-#   }
-# }
-
 resource "aws_security_group" "allow_http_internal" {
   name        = "allow_http_internal"
   description = "Allow HTTP inbound traffic"
@@ -237,25 +226,6 @@ resource "aws_launch_template" "nginx_template" {
   description = "Launch template for Smart Appartment Data recruitment task"
   update_default_version = true
 
-  # block_device_mappings {
-  #   device_name = "/dev/sda"
-
-  #   ebs {
-  #     volume_size = 20
-  #     delete_on_termination = true
-  #     volume_type = "gp2"
-  #   }
-  # }
-  
-  # capacity_reservation_specification {
-  #   capacity_reservation_preference = "open"
-  # }
-  
-  # cpu_options {
-  #   core_count       = 2
-  #   threads_per_core = 2
-  # }
-
   ebs_optimized = false
   image_id = "ami-0708a0921e5eaf65d"
   # ubuntu: ami-0817d428a6fb68645
@@ -265,12 +235,6 @@ resource "aws_launch_template" "nginx_template" {
   iam_instance_profile {
     arn =  aws_iam_instance_profile.ec2_s3_access_permissions_profile.arn
   }
-  
-  # metadata_options {
-  #   http_endpoint               = "enabled"
-  #   http_tokens                 = "required"
-  #   http_put_response_hop_limit = 1
-  # }
 
   monitoring {
     enabled = true
