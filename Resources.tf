@@ -262,7 +262,9 @@ resource "aws_launch_template" "nginx_template" {
   instance_initiated_shutdown_behavior = "terminate"
   instance_type = "t2.micro"
   vpc_security_group_ids = [ aws_security_group.allow_http_internal.id ]
-  iam_instance_profile = aws_iam_role_policy_attachment.ec2_s3_access_permissions.arn
+  iam_instance_profile {
+    arn =  aws_iam_role_policy_attachment.ec2_s3_access_permissions.arn
+  }
   
   # metadata_options {
   #   http_endpoint               = "enabled"
