@@ -263,7 +263,7 @@ resource "aws_launch_template" "nginx_template" {
   instance_type = "t2.micro"
   vpc_security_group_ids = [ aws_security_group.allow_http_internal.id ]
   iam_instance_profile {
-    arn =  aws_iam_role.iam_for_ec2.arn
+    arn =  aws_iam_instance_profile.ec2_s3_access_permissions_profile.arn
   }
   
   # metadata_options {
@@ -409,7 +409,12 @@ resource "aws_iam_role" "iam_for_ec2" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "ec2_s3_access_permissions" {
+resource "aws_iam_role_policy_attachment" "ec2_s3_access_permissions_role" {
   role = aws_iam_role.iam_for_ec2.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforAWSCodeDeploy"
+}
+
+resource "aws_iam_instance_profile" "ec2_s3_access_permissions_profile" {
+  name = "ec2_s3_access_permissions_profile"
+  role = aws_iam_role.iam_for_ec2.name
 }
