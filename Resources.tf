@@ -263,7 +263,7 @@ resource "aws_launch_template" "nginx_template" {
   instance_type = "t2.micro"
   vpc_security_group_ids = [ aws_security_group.allow_http_internal.id ]
   iam_instance_profile {
-    arn =  aws_iam_role_policy_attachment.ec2_s3_access_permissions.arn
+    arn =  aws_iam_role.iam_for_ec2.arn
   }
   
   # metadata_options {
