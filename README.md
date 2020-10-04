@@ -14,7 +14,7 @@ configuration is splitted into two repositories:
 Both of these repositories has their own pipelines on Azure Devops:
 
 - Infrastructure: https://dev.azure.com/piotrpalka123/Smart%20Apartment%20Data/_build?definitionId=1
-- Nginx files: https://dev.azure.com/piotrpalka123/Smart%20Apartment%20Data/_build?definitionId=2
+- Nginx files: https://dev.azure.com/piotrpalka123/Smart%20Apartment%20Data/_build?definitionId=3
 
 ## Note about the Technical Assessment execution
 
