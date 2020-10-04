@@ -1,4 +1,4 @@
-# Smart-Appartment-Data-recruitment-task
+# Smart-Apartment-Data-recruitment-task
 
 Infrastructure as Code for Smart Appartment Data recruitment task according to the 
 Technical Assessment Document: https://workdrive.zohoexternal.com/external/9bxrYHL77eW-JJod4
