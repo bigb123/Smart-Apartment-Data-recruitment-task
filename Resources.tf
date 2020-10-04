@@ -386,7 +386,7 @@ EOF
 ###
 
 #
-# IAM role for EC2 instance
+# IAM role for EC2 instance (so it can access the code stored on S3)
 #
 
 resource "aws_iam_role" "iam_for_ec2" {
@@ -417,4 +417,18 @@ resource "aws_iam_role_policy_attachment" "ec2_s3_access_permissions_role" {
 resource "aws_iam_instance_profile" "ec2_s3_access_permissions_profile" {
   name = "ec2_s3_access_permissions_profile"
   role = aws_iam_role.iam_for_ec2.name
+}
+
+#
+# S3 bucket
+#
+
+resource "aws_s3_bucket" "codedeploy_deployment_storage" {
+  bucket = "codedeploy-deployment-storage"
+  acl    = "private"
+
+  tags = {
+    Name        = "Code Deploy files deployment storage"
+    Environment = "Dev"
+  }
 }
