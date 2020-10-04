@@ -262,6 +262,7 @@ resource "aws_launch_template" "nginx_template" {
   instance_initiated_shutdown_behavior = "terminate"
   instance_type = "t2.micro"
   vpc_security_group_ids = [ aws_security_group.allow_http_internal.id ]
+  iam_instance_profile = aws_iam_role_policy_attachment.ec2_s3_access_permissions.arn
   
   # metadata_options {
   #   http_endpoint               = "enabled"
@@ -373,4 +374,40 @@ EOF
     subnet_ids = [ aws_subnet.private_subnet_1.id, aws_subnet.private_subnet_2.id ]
     security_group_ids = [ aws_security_group.allow_http_external.id ]
   }
+}
+
+
+###
+#
+# Code deploy
+#
+###
+
+#
+# IAM role for EC2 instance
+#
+
+resource "aws_iam_role" "iam_for_ec2" {
+  name = "iam_for_lambda"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_s3_access_permissions" {
+  role = aws_iam_role.iam_for_lambda.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforAWSCodeDeploy"
 }

@@ -1,10 +1,10 @@
 /*
  * This function is checking access to external and internal sites. However,
  * internal EC2 instance that is running Ńginx in private subnet has non-static
- * ip address. To avoid hardcoding it, I will have to 
- * 1 - read the ip address from the EC2 instance during runtime, or
- * 2 - set up the internal load balancer, or
- * 3 - use the elastic ip
+ * ip address. in real life scenario I should avoid hardcoding. To achieve it
+ * I will have to:
+ * 1 - read the ip address from the EC2 instance during this code runtime, or
+ * 2 - set up the internal load balancer
  * 
  * As none of these is a part of the task specification I decided to 
  * follow the easiest way by hardcoding ip address of the instance 
