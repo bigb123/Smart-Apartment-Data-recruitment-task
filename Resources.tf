@@ -390,7 +390,7 @@ EOF
 #
 
 resource "aws_iam_role" "iam_for_ec2" {
-  name = "iam_for_lambda"
+  name = "iam_for_ec2"
 
   assume_role_policy = <<EOF
 {
@@ -410,6 +410,6 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "ec2_s3_access_permissions" {
-  role = aws_iam_role.iam_for_lambda.name
+  role = aws_iam_role.iam_for_ec2.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforAWSCodeDeploy"
 }
