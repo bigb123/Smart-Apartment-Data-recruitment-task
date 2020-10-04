@@ -1,6 +1,6 @@
 # Smart-Apartment-Data-recruitment-task
 
-Infrastructure as Code for Smart Appartment Data recruitment task according to the 
+Infrastructure as Code for Smart Apartment Data recruitment task according to the 
 Technical Assessment Document: https://workdrive.zohoexternal.com/external/9bxrYHL77eW-JJod4
 
 The cloud provider is AWS and the pipeline provider is Azure Devops. The whole 
@@ -9,7 +9,7 @@ configuration is splitted into two repositories:
 - one on Github that keeps the Terraform AWS infrastructure 
   configuration and AWS Lambda code 
 - one on Azure Devops that holds the Nginx files deployable via CodeDeploy. 
-  The repository is available here: https://dev.azure.com/piotrpalka123/Smart%20Apartment%20Data/_git/smart-appartment-data-codedeploy
+  The repository is available here: https://dev.azure.com/piotrpalka123/Smart%20Apartment%20Data/_git/smart-apartment-data-codedeploy
 
 Both of these repositories has their own pipelines on Azure Devops:
 
