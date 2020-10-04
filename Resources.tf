@@ -494,25 +494,25 @@ resource "aws_iam_role_policy_attachment" "codedeploy_role_asg" {
 # Code deploy
 #
 
-# resource "aws_codedeploy_app" "nginx_app" {
-#   compute_platform = "Server"
-#   name             = "nginx_app"
-# }
+resource "aws_codedeploy_app" "nginx_app" {
+  compute_platform = "Server"
+  name             = "nginx_app"
+}
 
-# resource "aws_codedeploy_deployment_config" "nginx_deployment" {
-#   deployment_config_name = "nginx_deployment"
+resource "aws_codedeploy_deployment_config" "nginx_deployment" {
+  deployment_config_name = "nginx_deployment"
 
-#   minimum_healthy_hosts {
-#     type  = "HOST_COUNT"
-#     value = 0
-#   }
-# }
+  minimum_healthy_hosts {
+    type  = "HOST_COUNT"
+    value = 0
+  }
+}
 
-# resource "aws_codedeploy_deployment_group" "nginx_deployment_group" {
-#   app_name               = aws_codedeploy_app.nginx_app.name
-#   deployment_group_name  = "nginx_deployment_group"
-#   service_role_arn       = aws_iam_role.iam_for_codedeploy.arn
-#   deployment_config_name = aws_codedeploy_deployment_config.nginx_deployment.id
+resource "aws_codedeploy_deployment_group" "nginx_deployment_group" {
+  app_name               = aws_codedeploy_app.nginx_app.name
+  deployment_group_name  = "nginx_deployment_group"
+  service_role_arn       = aws_iam_role.iam_for_codedeploy.arn
+  deployment_config_name = aws_codedeploy_deployment_config.nginx_deployment.id
 
-#   autoscaling_groups = [ aws_autoscaling_group.nginx_asg.name ]
-# }
+  autoscaling_groups = [ aws_autoscaling_group.nginx_asg.name ]
+}
