@@ -432,3 +432,87 @@ resource "aws_s3_bucket" "codedeploy_deployment_storage" {
     Environment = "Dev"
   }
 }
+
+#
+# Permissions
+#
+
+resource "aws_iam_role" "iam_for_codedeploy" {
+  name = "iam_for_codedeploy"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "codedeploy.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "codedeploy_role" {
+  role = aws_iam_role.iam_for_codedeploy.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
+}
+
+resource "aws_iam_policy" "codedeploy_asg_permissions" {
+  name        = "codedeploy_asg_permissions"
+  path        = "/"
+  description = "Additional permissions to cooperate with Auto Scaling Group"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "ec2:RunInstances",
+        "ec2:CreateTags",
+        "iam:PassRole"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "codedeploy_role_asg" {
+  role = aws_iam_role.iam_for_codedeploy.name
+  policy_arn = aws_iam_policy.codedeploy_asg_permissions.arn
+}
+
+#
+# Code deploy
+#
+
+resource "aws_codedeploy_app" "nginx_app" {
+  compute_platform = "Server"
+  name             = "nginx_app"
+}
+
+resource "aws_codedeploy_deployment_config" "nginx_deployment" {
+  deployment_config_name = "nginx_deployment"
+
+  minimum_healthy_hosts {
+    type  = "HOST_COUNT"
+    value = 1
+  }
+}
+
+resource "aws_codedeploy_deployment_group" "nginx_deployment_group" {
+  app_name               = aws_codedeploy_app.nginx_app.name
+  deployment_group_name  = "nginx_deployment_group"
+  service_role_arn       = aws_iam_role.iam_for_codedeploy.arn
+  deployment_config_name = aws_codedeploy_deployment_config.nginx_deployment.id
+
+  autoscaling_groups = [ aws_autoscaling_group.nginx_asg.name ]
+}
